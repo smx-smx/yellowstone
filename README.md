@@ -1,8 +1,10 @@
-yellowstone v2.1.0
+sv_node_rtspclient v2.1.2
 ===
 
+Fork from [yellowstone](https://github.com/mbullington/yellowstone)
+
 ```
-npm install yellowstone --save
+npm install sv_node_rtspclient --save
 ```
 
 Yellowstone is a high-level library for receiving data from RTSP/RTP. It
