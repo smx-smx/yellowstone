@@ -5,7 +5,7 @@
 const { RtspClient, H264Transport } = require('../lib');
 const fs = require('fs');
 
-const url = 'rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/definst/mp4:bigbuckbunnyiphone_400.mp4';
+const url = 'rtsp://admin:12345@192.168.1.78:554/Streaming/Channels/101?transportmode=unicast&profile=Profile_101';
 const filename = 'video.264';
 
 const client = new RtspClient();
@@ -20,7 +20,7 @@ client.connect(url, { keepAlive: true }).then((details) => {
 
   // Open the output file
   if (details.isH264) {
-    const h264 = new H264Transport(client, fs.createWriteStream("bigbuckbunny.264"), details);
+    //const h264 = new H264Transport(client, fs.createWriteStream("bigbuckbunny.264"), details);
   }
 
   client.play();
@@ -28,13 +28,17 @@ client.connect(url, { keepAlive: true }).then((details) => {
 
 // data == packet.payload, just a small convenient thing
 // data is for RTP packets
-client.on('data', function(channel, data, packet) {
-  console.log('RTP Packet', 'ID=' + packet.id, 'TS=' + packet.timestamp, 'M=' + packet.marker);
+client.on('data', function(channel, data, packet, rtspMessage, rtspPacket) {
+  console.log('RTP Packet', 'ID=' + packet.id, 'TS=' + packet.timestamp, 'M=' + packet.marker, data.slice(0, 20));
+
+  const buf = Buffer.concat([Buffer.from(rtspMessage), rtspPacket])
+  console.log('RTSP data raw packet: ', buf.length, buf.slice(0, 20), '\n');
 });
 
 // control data is for RTCP packets
-client.on('controlData', function(channel, rtcpPacket) {
-  console.log('RTCP Control Packet', 'TS=' + rtcpPacket.timestamp, 'PT=' + rtcpPacket.packetType);
+client.on('controlData', function(channel, rtcpPacket, rtspMessage, rtspPacket) {
+    console.log('RTCP Control Packet', 'TS=' + rtcpPacket.timestamp, 'PT=' + rtcpPacket.packetType);
+    //console.log('RTSP packet: ', rtspPacket.slice(0, 20));
 });
 
 // allows you to optionally allow for RTSP logging
