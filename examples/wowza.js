@@ -8,6 +8,7 @@ const fs = require('fs');
 const url = 'rtsp://admin:12345@192.168.1.78:554/Streaming/Channels/101?transportmode=unicast&profile=Profile_101';
 const filename = 'video.264';
 
+
 const client = new RtspClient();
 
 // details is a plain Object that includes...
@@ -47,3 +48,8 @@ client.on('log', function(data, prefix) {
   console.log(prefix + ': ' + data);
 });
 
+client.on('response', function(rtspStatusLine, rtspHeaders, mediaHeaders) {
+    console.log('rtspStatusLine: ', rtspStatusLine);
+    console.log('rtspHeaders: ', rtspHeaders);
+    console.log('mediaHeaders: ', mediaHeaders);
+});
