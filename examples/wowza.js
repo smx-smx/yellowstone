@@ -45,11 +45,14 @@ client.on('controlData', function(channel, rtcpPacket, rtspMessage, rtspPacket) 
 // allows you to optionally allow for RTSP logging
 // also allows for you to hook this into your own logging system easily
 client.on('log', function(data, prefix) {
-  console.log(prefix + ': ' + data);
+  //console.log(prefix + ': ' + data);
 });
 
-client.on('response', function(rtspStatusLine, rtspHeaders, mediaHeaders) {
-    console.log('rtspStatusLine: ', rtspStatusLine);
-    console.log('rtspHeaders: ', rtspHeaders);
-    console.log('mediaHeaders: ', mediaHeaders);
+client.on('message', function(requestName, id, req, resp) {
+    //console.log('[Method] ', requestName);
+    //console.log('[CSeq] ', id);
+    //console.log('[Request]');
+    console.log(req);
+    //console.log('[Response]');
+    console.log(resp);
 });
