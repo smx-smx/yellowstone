@@ -25,6 +25,8 @@ client.connect(url, { keepAlive: true }).then((details) => {
   }
 
   client.play();
+}).catch(err=>{
+    console.log(err);
 });
 
 // data == packet.payload, just a small convenient thing
@@ -33,7 +35,7 @@ client.on('data', function(channel, data, packet, rtspMessage, rtspPacket) {
   console.log('RTP Packet', 'ID=' + packet.id, 'TS=' + packet.timestamp, 'M=' + packet.marker, data.slice(0, 20));
 
   const buf = Buffer.concat([Buffer.from(rtspMessage), rtspPacket])
-  console.log('RTSP data raw packet: ', buf.length, buf.slice(0, 20), '\n');
+  console.log('RTSP data raw packet: ', data.length, data.slice(0, 20), '\n');
 });
 
 // control data is for RTCP packets
@@ -56,3 +58,9 @@ client.on('message', function(requestName, id, req, resp) {
     //console.log('[Response]');
     console.log(resp);
 });
+
+client.once('data', ()=>{
+    setTimeout(()=>{
+        client.close(false);
+    }, 3000);
+})
