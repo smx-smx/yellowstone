@@ -61,6 +61,11 @@ client.on('message', function(requestName, id, req, resp) {
 
 client.once('data', ()=>{
     setTimeout(()=>{
-        client.close(false);
+        //client.close(true);
     }, 3000);
-})
+});
+
+client.once('data_error', (err)=>{
+    console.log(err);
+   process.nextTick(client.close.bind(client));
+});
