@@ -5,7 +5,7 @@
 const { RtspClient, H264Transport } = require('../lib');
 const fs = require('fs');
 
-const url = 'rtsp://admin:12345@192.168.1.78:554/Streaming/Channels/101?transportmode=unicast&profile=Profile_101';
+const url = 'rtsp://admin:12345@192.168.1.62:554/Streaming/Channels/101?transportmode=unicast&profile=Profile_101';
 const filename = 'video.264';
 
 
@@ -34,8 +34,9 @@ client.connect(url, { keepAlive: true }).then((details) => {
 client.on('data', function(channel, data, packet, rtspMessage, rtspPacket) {
   console.log('RTP Packet', 'ID=' + packet.id, 'TS=' + packet.timestamp, 'M=' + packet.marker, data.slice(0, 20));
 
-  const buf = Buffer.concat([Buffer.from(rtspMessage), rtspPacket])
-  console.log('RTSP data raw packet: ', data.length, data.slice(0, 20), '\n');
+  const buf = Buffer.concat([Buffer.from(rtspMessage), rtspPacket]);
+  console.log('rtsp channel : ', channel);
+  console.log('RTSP data raw packet: ', channel, data.length, data.slice(0, 20), '\n');
 });
 
 // control data is for RTCP packets

@@ -1,6 +1,6 @@
 {
   "name": "sv_node_rtspclient",
-  "version": "2.1.9",
+  "version": "2.2.0",
   "description": "An RTSP client for node.js.",
   "main": "lib/index.js",
   "repository": {
